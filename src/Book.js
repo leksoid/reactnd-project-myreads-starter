@@ -4,6 +4,7 @@ class Book extends Component {
 
     render(){
         const { book, moveShelf } = this.props;
+        let displayedThumbnail = book.imageLinks ? book.imageLinks.thumbnail : '';
         return (
             <div className="book">
                 <div className="book-top">
@@ -11,7 +12,7 @@ class Book extends Component {
                         style={{
                             width: 128,
                             height: 193,
-                            backgroundImage: `url("${book.imageLinks.thumbnail}")`
+                            backgroundImage: `url("${displayedThumbnail}")`
                         }}
                     />
                     <div className="book-shelf-changer">
@@ -19,6 +20,7 @@ class Book extends Component {
                             onChange={(event)=>{
                                 moveShelf(book, event.target.value)
                         }}
+                            value={this.props.currentShelf}
                         >
                             <option value="move" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
