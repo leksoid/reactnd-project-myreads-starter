@@ -8,25 +8,25 @@ class SearchPage extends Component {
 
     state = {
         query: '',
-        searchedBooks: []
+        result: []
     };
 
-    updateQeury = (query)=>{
+    updateQuery = (query)=>{
         this.setState({query: query});
         this.getBooksFromSearch(query);
     };
 
     getBooksFromSearch = (query)=>{
         if(query){
-            BooksAPI.search(query).then((searchedBooks)=> {
-                if(searchedBooks.error){
-                    this.setState({searchedBooks:[]})
+            BooksAPI.search(query).then((result)=> {
+                if(result.error){
+                    this.setState({result:[]})
                 } else {
-                    this.setState({searchedBooks:searchedBooks})
+                    this.setState({result})
                 }
             })
         } else {
-            this.setState({searchedBooks:[]})
+            this.setState({result:[]})
         }
     };
 
@@ -45,23 +45,23 @@ class SearchPage extends Component {
                             type="text"
                             placeholder="Search by title or author"
                             value={this.state.query}
-                            onChange={(event)=> this.updateQeury(event.target.value)}
+                            onChange={(event)=> this.updateQuery(event.target.value)}
                         />
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
                         {
-                            this.state.searchedBooks
-                                .map(searchedBook=> {
+                            this.state.result
+                                .map(searchResult=> {
                                     let shelf = "none";
                                     this.props.books.map(book=>
                                     {
-                                        book.id === searchedBook.id ? shelf = book.shelf : ""
+                                        book.id === searchResult.id ? shelf = book.shelf : ""
                                     });
-                                    return (<li key={searchedBook.id}>
+                                    return (<li key={searchResult.id}>
                                         <Book
-                                            book={searchedBook}
+                                            book={searchResult}
                                             moveShelf={this.props.moveShelf}
                                             currentShelf={shelf}
                                         />
